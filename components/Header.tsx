@@ -9,9 +9,11 @@ const CustomHeader = () => {
         source={require("../assets/imgs/avatar.png")}
       />
       <View style={styles.profileTextContainer}>
-        <Text style={styles.profileName}>Nombre</Text>
+        <Text style={styles.profileName}>Alonso Marrero Bello</Text>
         <Text style={styles.profileDescription}>
-          texto ejemplo texto ejemplo texto ejemplo texto ejemplo texto ejemplo
+          Soy un estudiante de segundo de DAM (desarollo de aplicaciones
+          multiplataforma) que odia a uno de sus profesores porque a veces le
+          gusta enredar las practicas, porque el pelo no puede.
         </Text>
       </View>
     </View>
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   profileDescription: {
+    width: "25%",
     color: "gray",
   },
 });
