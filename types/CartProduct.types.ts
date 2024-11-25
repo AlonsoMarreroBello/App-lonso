@@ -1,4 +1,5 @@
 export interface CartProduct {
+  id: string;
   name: string;
   category: string;
   amount: number;
