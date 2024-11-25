@@ -19,6 +19,11 @@ export default function WelcomePage() {
             <Text style={styles.pressableText}>Botón</Text>
           </Link>
         </Pressable>
+        <Pressable style={styles.pressable}>
+          <Link href={"../shoppingCart"}>
+            <Text style={styles.pressableText}>Lista de la compra</Text>
+          </Link>
+        </Pressable>
       </View>
     </View>
   );
@@ -34,6 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D32F2F",
     padding: 5,
     borderRadius: 5,
+    margin: 2,
   },
   mainText: {
     fontSize: 25,
