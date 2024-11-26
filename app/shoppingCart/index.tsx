@@ -7,14 +7,14 @@ import {
   Image,
 } from "react-native";
 import { CartProduct } from "../../types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import uuid from "react-native-uuid";
 
 const products: CartProduct[] = [
   {
     id: uuid.v4(),
     name: "pan en barra",
-    category: "panadería",
+    category: "Panadería",
     amount: 4,
     price: 2,
     isBought: false,
@@ -37,42 +37,27 @@ const products: CartProduct[] = [
   },
 ];
 
-const getProductImage = async (keyword: string, category: string) => {
-  try {
-    const response = await fetch(
-      `https://pixabay.com/api/?key=47286323-63b51857795ae6a72b02911ed&q=${keyword}category=${category}&lang=es`
-    );
-    const text = await response.text();
-    const data = JSON.parse(text);
-
-    if (data.hits && data.hits.length > 0) {
-      return data.hits[0].webformatURL; // Devuelve la URL de la primera imagen
-    }
-    return "https://via.placeholder.com/500"; // Imagen de reemplazo si no se encuentra
-  } catch (error) {
-    console.error("Error fetching image", error);
-    return "https://via.placeholder.com/500"; // Imagen de reemplazo en caso de error
+const getProductImageFromData = (category: string) => {
+  if (category == "Panadería") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else if (category == "Enlatados") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else if (category == "Bebidas") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else if (category == "Carnes") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else if (category == "Pescados") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else if (category == "Frutas/Verduras") {
+    return require("../../assets/imgs/panaderia.jpg");
+  } else {
+    return require("../../assets/imgs/panaderia.jpg");
   }
 };
 
 const index = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState(products);
-  const [productImages, setProductImages] = useState<{ [key: string]: string }>(
-    {}
-  );
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const images: { [key: string]: string } = {};
-      for (const product of products) {
-        const imageUrl = await getProductImage(product.name, product.category); // Utilizamos el nombre del producto como keyword
-        images[product.id] = imageUrl;
-      }
-      setProductImages(images);
-    };
-    fetchImages();
-  }, [products]);
 
   const deleteProduct = (product: CartProduct) => {
     setProductList(productList.filter((listProduct) => product != listProduct));
@@ -98,7 +83,7 @@ const index = () => {
             >
               <View style={styles.productImageContainer}>
                 <Image
-                  source={{ uri: productImages[product.id] }}
+                  source={getProductImageFromData(product.category)}
                   style={styles.productImage}
                 />
               </View>
