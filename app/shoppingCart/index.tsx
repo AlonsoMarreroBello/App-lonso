@@ -74,6 +74,10 @@ const index = () => {
     fetchImages();
   }, [products]);
 
+  const deleteProduct = (product: CartProduct) => {
+    setProductList(productList.filter((listProduct) => product != listProduct));
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -113,7 +117,10 @@ const index = () => {
                     style={styles.icon}
                   />
                 </Pressable>
-                <Pressable style={[styles.productButton, styles.trashButton]}>
+                <Pressable
+                  style={[styles.productButton, styles.trashButton]}
+                  onPress={() => deleteProduct(product)}
+                >
                   <Image
                     resizeMode="contain"
                     source={require("../../assets/imgs/icons8-basura-128.png")}
@@ -172,10 +179,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   evenBackground: {
-    backgroundColor: "#00000066",
+    backgroundColor: "#00000033",
   },
   oddBackground: {
-    backgroundColor: "#00000033",
+    backgroundColor: "#00000022",
   },
   productDetails: {
     flex: 1,
