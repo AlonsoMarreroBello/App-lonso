@@ -9,6 +9,7 @@ import {
 import { CartProduct } from "../../types";
 import React, { useState } from "react";
 import uuid from "react-native-uuid";
+import { useEffect } from "react";
 
 const products: CartProduct[] = [
   {
@@ -63,6 +64,36 @@ const index = () => {
     setProductList(productList.filter((listProduct) => product != listProduct));
   };
 
+  const addProductToCart = (product: CartProduct) => {
+    let products: CartProduct[] = [];
+    productList.forEach((actualProduct) => {
+      if (product === actualProduct) {
+        actualProduct.isBought = !actualProduct.isBought;
+      }
+      products = [...products, actualProduct];
+    });
+    products.sort((a, b) => {
+      if (a.isBought === b.isBought) return 0;
+      return a.isBought ? 1 : -1;
+    });
+    setProductList(products);
+  };
+
+  const calculateTotalPrice = () => {
+    let sum = 0;
+    products.forEach((product) => {
+      if (product.isBought) {
+        sum = sum + product.amount * product.price;
+      }
+    });
+    setTotalPrice(sum);
+  };
+
+  useEffect(() => {
+    calculateTotalPrice();
+    return () => {};
+  }, [productList]);
+
   return (
     <View style={styles.container}>
       <View>
@@ -79,6 +110,7 @@ const index = () => {
               style={[
                 styles.productContainer,
                 index % 2 === 0 ? styles.evenBackground : styles.oddBackground,
+                product.isBought ? { backgroundColor: "blue" } : {},
               ]}
             >
               <View style={styles.productImageContainer}>
@@ -95,7 +127,10 @@ const index = () => {
                 <Text style={styles.productText}>Precio: {product.price}€</Text>
               </View>
               <View style={styles.actionButtons}>
-                <Pressable style={[styles.productButton, styles.cartButton]}>
+                <Pressable
+                  style={[styles.productButton, styles.cartButton]}
+                  onPress={() => addProductToCart(product)}
+                >
                   <Image
                     resizeMode="contain"
                     source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
@@ -156,6 +191,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#00000044",
     minHeight: "80%",
     borderRadius: 20,
+  },
+  productBought: {
+    textDecorationLine: "line-through",
   },
   productContainer: {
     flexDirection: "row",
