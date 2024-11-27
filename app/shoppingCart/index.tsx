@@ -5,6 +5,7 @@ import {
   Pressable,
   ScrollView,
   Image,
+  Modal,
 } from "react-native";
 import { CartProduct } from "../../types";
 import React, { useState } from "react";
@@ -43,6 +44,7 @@ const index = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState<CartProduct[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [productToEdit, setProductToEdit] = useState<CartProduct>(cleanProduct);
 
   const handleAddProductToList = (productData: CartProduct) => {
@@ -61,6 +63,11 @@ const index = () => {
   const handleEdit = (product: CartProduct) => {
     setProductToEdit(product);
     setModalVisible(true);
+  };
+
+  const handleDeleteAll = () => {
+    setProductList([]);
+    setDeleteModalVisible(false);
   };
 
   const deleteProduct = (product: CartProduct) => {
@@ -107,7 +114,7 @@ const index = () => {
 
   return (
     <View style={styles.container}>
-      {modalVisible ? (
+      {modalVisible && (
         <>
           <CustomModal
             modalVisible={modalVisible}
@@ -115,16 +122,56 @@ const index = () => {
             addProduct={handleAddProductToList}
             modifyProduct={updateProduct}
             productToEdit={productToEdit}
-          ></CustomModal>
+          />
         </>
-      ) : (
-        <></>
+      )}
+      {deleteModalVisible && (
+        <>
+          <Modal>
+            <View style={styles.modalOutterView}>
+              <View style={styles.modalInnerView}>
+                <Text>
+                  ¿Está seguro de que desea elimiar todos los productos?
+                </Text>
+                <View style={styles.buttonContainer}>
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => handleDeleteAll()}
+                  >
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => setDeleteModalVisible(false)}
+                  >
+                    <Text style={styles.buttonText}>Eliminar</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </>
       )}
       <View>
         <Text style={styles.titleText}>Lista de la compra - {totalPrice}</Text>
-        <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
-          <Text style={styles.buttonText}>Añadir producto</Text>
-        </Pressable>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>Añadir producto</Text>
+          </Pressable>
+          <Pressable
+            style={
+              productList.length != 0 ? styles.button : styles.buttonDeactivated
+            }
+            onPress={() =>
+              productList.length != 0 && setDeleteModalVisible(true)
+            }
+          >
+            <Text style={styles.buttonText}>Eliminar todo</Text>
+          </Pressable>
+        </View>
       </View>
       <View style={styles.listContainer}>
         <ScrollView style={styles.productList}>
@@ -224,8 +271,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
+  },
   button: {
     backgroundColor: "red",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  buttonDeactivated: {
+    backgroundColor: "#FF000077",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -235,6 +295,26 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     textAlign: "center",
+  },
+  modalOutterView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000000AA",
+  },
+  modalInnerView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   listContainer: {
     width: "100%",
