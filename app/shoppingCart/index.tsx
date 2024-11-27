@@ -12,38 +12,13 @@ import uuid from "react-native-uuid";
 import { useEffect } from "react";
 import CustomModal from "../../components/modal/CustomModal";
 
-const products: CartProduct[] = [
-  {
-    id: uuid.v4(),
-    name: "pan en barra",
-    category: "Panadería",
-    amount: 4,
-    price: 2,
-    isBought: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "aceite de oliva virgen extra",
-    category: "otros",
-    amount: 1,
-    price: 8,
-    isBought: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "atún en lata",
-    category: "enlatados",
-    amount: 2,
-    price: 3.75,
-    isBought: false,
-  },
-];
-
-type ProductToAddType = {
-  productName: string;
-  productPrice: number;
-  productAmount: number;
-  productCategory: string;
+const cleanProduct: CartProduct = {
+  id: "",
+  name: "",
+  category: "",
+  amount: 0,
+  price: 0,
+  isBought: false,
 };
 
 const getProductImageFromData = (category: string) => {
@@ -66,21 +41,26 @@ const getProductImageFromData = (category: string) => {
 
 const index = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState<CartProduct[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [productToEdit, setProductToEdit] = useState<CartProduct>();
+  const [productToEdit, setProductToEdit] = useState<CartProduct>(cleanProduct);
 
-  const handleAddProductToList = (productData: ProductToAddType) => {
-    let products: CartProduct[] = productList;
-    products.push({
+  const handleAddProductToList = (productData: CartProduct) => {
+    const newProduct = {
       id: uuid.v4(),
-      name: productData.productName,
-      category: productData.productCategory,
-      amount: productData.productAmount,
-      price: productData.productPrice,
+      name: productData.name,
+      category: productData.category,
+      amount: productData.amount,
+      price: productData.price,
       isBought: false,
-    });
-    setProductList(products);
+    };
+
+    setProductList((prevProducts) => [...prevProducts, newProduct]);
+  };
+
+  const handleEdit = (product: CartProduct) => {
+    setProductToEdit(product);
+    setModalVisible(true);
   };
 
   const deleteProduct = (product: CartProduct) => {
@@ -100,6 +80,14 @@ const index = () => {
       return a.isBought ? 1 : -1;
     });
     setProductList(products);
+  };
+
+  const updateProduct = (newProduct: CartProduct) => {
+    setProductList((prevList) =>
+      prevList.map((product) =>
+        product.id === newProduct.id ? { ...product, ...newProduct } : product
+      )
+    );
   };
 
   const calculateTotalPrice = () => {
@@ -125,6 +113,8 @@ const index = () => {
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             addProduct={handleAddProductToList}
+            modifyProduct={updateProduct}
+            productToEdit={productToEdit}
           ></CustomModal>
         </>
       ) : (
@@ -144,7 +134,6 @@ const index = () => {
               style={[
                 styles.productContainer,
                 index % 2 === 0 ? styles.evenBackground : styles.oddBackground,
-                product.isBought ? { backgroundColor: "green" } : {},
               ]}
             >
               <View style={styles.productImageContainer}>
@@ -154,7 +143,9 @@ const index = () => {
                 />
               </View>
               <View style={styles.productDetails}>
-                <Text style={styles.productText}>Nombre: {product.name}</Text>
+                <Text style={(styles.productText, styles.productName)}>
+                  {product.name}
+                </Text>
                 <Text style={styles.productText}>
                   Cantidad: {product.amount}
                 </Text>
@@ -163,24 +154,41 @@ const index = () => {
               <View style={styles.actionButtons}>
                 <Pressable
                   style={[styles.productButton, styles.cartButton]}
-                  onPress={() => addProductToCart(product)}
+                  onPress={() => handleEdit(product)}
                 >
                   <Image
                     resizeMode="contain"
-                    source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
+                    source={require("../../assets/imgs/icons8-editar-96.png")}
                     style={styles.icon}
                   />
                 </Pressable>
-                <Pressable
-                  style={[styles.productButton, styles.cartButton]}
-                  onPress={() => setProductToEdit(product)}
-                >
-                  <Image
-                    resizeMode="contain"
-                    source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
-                    style={styles.icon}
-                  />
-                </Pressable>
+                {product.isBought ? (
+                  <>
+                    <Pressable
+                      style={[styles.productButton, styles.cartButtonBuyed]}
+                      onPress={() => addProductToCart(product)}
+                    >
+                      <Image
+                        resizeMode="contain"
+                        source={require("../../assets/imgs/icons8-marca-de-verificación-100.png")}
+                        style={styles.icon}
+                      />
+                    </Pressable>
+                  </>
+                ) : (
+                  <>
+                    <Pressable
+                      style={[styles.productButton, styles.cartButton]}
+                      onPress={() => addProductToCart(product)}
+                    >
+                      <Image
+                        resizeMode="contain"
+                        source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
+                        style={styles.icon}
+                      />
+                    </Pressable>
+                  </>
+                )}
                 <Pressable
                   style={[styles.productButton, styles.trashButton]}
                   onPress={() => deleteProduct(product)}
@@ -256,6 +264,10 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   productText: {
+    fontSize: 14,
+  },
+  productName: {
+    fontWeight: "bold",
     fontSize: 16,
   },
   productImageContainer: {
@@ -284,6 +296,9 @@ const styles = StyleSheet.create({
   },
   cartButton: {
     backgroundColor: "#FFFFFFAA",
+  },
+  cartButtonBuyed: {
+    backgroundColor: "#00FF00AA",
   },
   trashButton: {
     backgroundColor: "#FF0000AA",

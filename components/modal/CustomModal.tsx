@@ -6,40 +6,40 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { ReactElement, useState } from "react";
+import React, { useState } from "react";
 import AlertBox from "../alertBox/AlertBox";
+import { CartProduct } from "../../types";
 
 type CustomModalPropType = {
   modalVisible: boolean;
   setModalVisible: Function;
   addProduct: Function;
+  modifyProduct: Function;
+  productToEdit: CartProduct;
 };
 
 const CustomModal = ({
   modalVisible,
   setModalVisible,
   addProduct,
+  modifyProduct,
+  productToEdit,
 }: CustomModalPropType) => {
   const [showMessage, setShowMessage] = useState(false);
-  const [form, setForm] = useState({
-    productName: "",
-    productPrice: 0,
-    productAmount: 0,
-    productCategory: "",
-  });
+  const [form, setForm] = useState(productToEdit);
 
   const handleChange = (id: string, value: string) => {
-    if (id === "productPrice") {
+    if (id === "price") {
       const parsedValue = parseFloat(value);
       setForm({
         ...form,
-        productPrice: parsedValue,
+        price: parsedValue,
       });
-    } else if (id === "productAmount") {
+    } else if (id === "amount") {
       const parsedValue = parseInt(value);
       setForm({
         ...form,
-        productPrice: parsedValue,
+        amount: parsedValue,
       });
     } else {
     }
@@ -50,19 +50,24 @@ const CustomModal = ({
   };
 
   const handleSubmit = () => {
-    console.log(form);
     if (
-      form.productName.trim() !== "" &&
-      form.productPrice !== 0 &&
-      form.productAmount !== 0 &&
-      form.productCategory.trim() !== ""
+      form.name.trim() !== "" &&
+      form.price > 0 &&
+      form.amount > 0 &&
+      form.category.trim() !== ""
     ) {
-      addProduct(form);
+      if (form.id.trim() === "") {
+        addProduct(form);
+      } else {
+        modifyProduct(form);
+      }
       setForm({
-        productName: "",
-        productPrice: 0,
-        productAmount: 0,
-        productCategory: "",
+        id: "",
+        name: "",
+        category: "",
+        amount: 0,
+        price: 0,
+        isBought: false,
       });
       setModalVisible(!modalVisible);
     } else {
@@ -88,14 +93,16 @@ const CustomModal = ({
             <View>
               <Text>Nombre</Text>
               <TextInput
-                onChangeText={(text) => handleChange("productName", text)}
+                value={form.name}
+                onChangeText={(text) => handleChange("name", text)}
                 placeholder="Nombre"
               />
             </View>
             <View>
               <Text>Precio</Text>
               <TextInput
-                onChangeText={(text) => handleChange("productPrice", text)}
+                value={String(form.price)}
+                onChangeText={(text) => handleChange("price", text)}
                 placeholder="Precio"
                 keyboardType="numeric"
               />
@@ -103,7 +110,8 @@ const CustomModal = ({
             <View>
               <Text>Cantidad</Text>
               <TextInput
-                onChangeText={(text) => handleChange("productAmount", text)}
+                value={String(form.amount)}
+                onChangeText={(text) => handleChange("amount", text)}
                 placeholder="Cantidad"
                 keyboardType="numeric"
               />
@@ -111,12 +119,17 @@ const CustomModal = ({
             <View>
               <Text>Categoria</Text>
               <TextInput
-                onChangeText={(text) => handleChange("productCategory", text)}
+                value={form.category}
+                onChangeText={(text) => handleChange("category", text)}
                 placeholder="Categoría"
               />
             </View>
             <Pressable style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Añadir producto</Text>
+              {productToEdit.name.trim() != "" ? (
+                <Text style={styles.buttonText}>Editar producto</Text>
+              ) : (
+                <Text style={styles.buttonText}>Añadir producto</Text>
+              )}
             </Pressable>
             {showMessage && (
               <AlertBox
