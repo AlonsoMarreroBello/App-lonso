@@ -26,17 +26,17 @@ const getProductImageFromData = (category: string) => {
   if (category == "Panadería") {
     return require("../../assets/imgs/panaderia.jpg");
   } else if (category == "Enlatados") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/lata.jpg");
   } else if (category == "Bebidas") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/botella.jpg");
   } else if (category == "Carnes") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/carne.jpg");
   } else if (category == "Pescados") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/pescado.jpg");
   } else if (category == "Frutas/Verduras") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/frutas.jpeg");
   } else {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../assets/imgs/icons8-cesto-90.png");
   }
 };
 
