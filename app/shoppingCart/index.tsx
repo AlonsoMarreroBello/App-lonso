@@ -174,82 +174,96 @@ const index = () => {
         </View>
       </View>
       <View style={styles.listContainer}>
-        <ScrollView style={styles.productList}>
-          {productList.map((product, index) => (
-            <View
-              key={product.id}
-              style={[
-                styles.productContainer,
-                index % 2 === 0 ? styles.evenBackground : styles.oddBackground,
-              ]}
-            >
-              <View style={styles.productImageContainer}>
-                <Image
-                  source={getProductImageFromData(product.category)}
-                  style={styles.productImage}
-                />
-              </View>
-              <View style={styles.productDetails}>
-                <Text style={(styles.productText, styles.productName)}>
-                  {product.name}
-                </Text>
-                <Text style={styles.productText}>
-                  Cantidad: {product.amount}
-                </Text>
-                <Text style={styles.productText}>Precio: {product.price}€</Text>
-              </View>
-              <View style={styles.actionButtons}>
-                <Pressable
-                  style={[styles.productButton, styles.cartButton]}
-                  onPress={() => handleEdit(product)}
-                >
+        {productList.length > 0 ? (
+          <ScrollView style={styles.productList}>
+            {productList.map((product, index) => (
+              <View
+                key={product.id}
+                style={[
+                  styles.productContainer,
+                  index % 2 === 0
+                    ? styles.evenBackground
+                    : styles.oddBackground,
+                ]}
+              >
+                <View style={styles.productImageContainer}>
                   <Image
-                    resizeMode="contain"
-                    source={require("../../assets/imgs/icons8-editar-96.png")}
-                    style={styles.icon}
+                    source={getProductImageFromData(product.category)}
+                    style={styles.productImage}
                   />
-                </Pressable>
-                {product.isBought ? (
-                  <>
-                    <Pressable
-                      style={[styles.productButton, styles.cartButtonBuyed]}
-                      onPress={() => addProductToCart(product)}
-                    >
-                      <Image
-                        resizeMode="contain"
-                        source={require("../../assets/imgs/icons8-marca-de-verificación-100.png")}
-                        style={styles.icon}
-                      />
-                    </Pressable>
-                  </>
-                ) : (
-                  <>
-                    <Pressable
-                      style={[styles.productButton, styles.cartButton]}
-                      onPress={() => addProductToCart(product)}
-                    >
-                      <Image
-                        resizeMode="contain"
-                        source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
-                        style={styles.icon}
-                      />
-                    </Pressable>
-                  </>
-                )}
-                <Pressable
-                  style={[styles.productButton, styles.trashButton]}
-                  onPress={() => deleteProduct(product)}
-                >
-                  <Image
-                    resizeMode="contain"
-                    source={require("../../assets/imgs/icons8-basura-128.png")}
-                    style={styles.icon}
-                  />
-                </Pressable>
+                </View>
+                <View style={styles.productDetails}>
+                  <Text style={(styles.productText, styles.productName)}>
+                    {product.name}
+                  </Text>
+                  <Text style={styles.productText}>
+                    Cantidad: {product.amount}
+                  </Text>
+                  <Text style={styles.productText}>
+                    Precio: {product.price}€
+                  </Text>
+                </View>
+                <View style={styles.actionButtons}>
+                  <Pressable
+                    style={[styles.productButton, styles.cartButton]}
+                    onPress={() => handleEdit(product)}
+                  >
+                    <Image
+                      resizeMode="contain"
+                      source={require("../../assets/imgs/icons8-editar-96.png")}
+                      style={styles.icon}
+                    />
+                  </Pressable>
+                  {product.isBought ? (
+                    <>
+                      <Pressable
+                        style={[styles.productButton, styles.cartButtonBuyed]}
+                        onPress={() => addProductToCart(product)}
+                      >
+                        <Image
+                          resizeMode="contain"
+                          source={require("../../assets/imgs/icons8-marca-de-verificación-100.png")}
+                          style={styles.icon}
+                        />
+                      </Pressable>
+                    </>
+                  ) : (
+                    <>
+                      <Pressable
+                        style={[styles.productButton, styles.cartButton]}
+                        onPress={() => addProductToCart(product)}
+                      >
+                        <Image
+                          resizeMode="contain"
+                          source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
+                          style={styles.icon}
+                        />
+                      </Pressable>
+                    </>
+                  )}
+                  <Pressable
+                    style={[styles.productButton, styles.trashButton]}
+                    onPress={() => deleteProduct(product)}
+                  >
+                    <Image
+                      resizeMode="contain"
+                      source={require("../../assets/imgs/icons8-basura-128.png")}
+                      style={styles.icon}
+                    />
+                  </Pressable>
+                </View>
               </View>
+            ))}
+          </ScrollView>
+        ) : (
+          <View style={styles.productList}>
+            <View style={styles.noProductsContainer}>
+              <Text style={styles.noProductsContainerText}>
+                No hay productos agregados
+              </Text>
             </View>
-          ))}
-        </ScrollView>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -332,6 +346,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
+  },
+  noProductsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  noProductsContainerText: {
+    fontSize: 26,
+    textAlign: "center",
+    fontWeight: "600",
+    textShadowColor: "redwhite", // Color del "borde"
+    textShadowOffset: { width: 2, height: 2 }, // Desplazamiento de la sombra
+    textShadowRadius: 3, // Radio de la sombra
   },
   evenBackground: {
     backgroundColor: "#00000033",
