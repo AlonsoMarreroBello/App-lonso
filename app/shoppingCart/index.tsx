@@ -68,6 +68,7 @@ const index = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState(products);
   const [modalVisible, setModalVisible] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<CartProduct>();
 
   const handleAddProductToList = (productData: ProductToAddType) => {
     let products: CartProduct[] = productList;
@@ -171,6 +172,16 @@ const index = () => {
                   />
                 </Pressable>
                 <Pressable
+                  style={[styles.productButton, styles.cartButton]}
+                  onPress={() => setProductToEdit(product)}
+                >
+                  <Image
+                    resizeMode="contain"
+                    source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
+                    style={styles.icon}
+                  />
+                </Pressable>
+                <Pressable
                   style={[styles.productButton, styles.trashButton]}
                   onPress={() => deleteProduct(product)}
                 >
@@ -249,8 +260,8 @@ const styles = StyleSheet.create({
   },
   productImageContainer: {
     marginRight: 10,
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
   },
   productImage: {
     width: "100%",
@@ -262,7 +273,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   productButton: {
-    marginHorizontal: 10,
+    marginRight: 10,
     width: 40, // Tamaño del cuadrado
     height: 40, // Tamaño del cuadrado
     justifyContent: "center", // Centra el contenido verticalmente
