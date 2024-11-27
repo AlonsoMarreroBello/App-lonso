@@ -10,6 +10,7 @@ import { CartProduct } from "../../types";
 import React, { useState } from "react";
 import uuid from "react-native-uuid";
 import { useEffect } from "react";
+import CustomModal from "../../components/modal/CustomModal";
 
 const products: CartProduct[] = [
   {
@@ -38,6 +39,13 @@ const products: CartProduct[] = [
   },
 ];
 
+type ProductToAddType = {
+  productName: string;
+  productPrice: number;
+  productAmount: number;
+  productCategory: string;
+};
+
 const getProductImageFromData = (category: string) => {
   if (category == "Panadería") {
     return require("../../assets/imgs/panaderia.jpg");
@@ -59,6 +67,20 @@ const getProductImageFromData = (category: string) => {
 const index = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState(products);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleAddProductToList = (productData: ProductToAddType) => {
+    let products: CartProduct[] = productList;
+    products.push({
+      id: uuid.v4(),
+      name: productData.productName,
+      category: productData.productCategory,
+      amount: productData.productAmount,
+      price: productData.productPrice,
+      isBought: false,
+    });
+    setProductList(products);
+  };
 
   const deleteProduct = (product: CartProduct) => {
     setProductList(productList.filter((listProduct) => product != listProduct));
@@ -81,7 +103,8 @@ const index = () => {
 
   const calculateTotalPrice = () => {
     let sum = 0;
-    products.forEach((product) => {
+    const totalProducts = productList;
+    totalProducts.forEach((product) => {
       if (product.isBought) {
         sum = sum + product.amount * product.price;
       }
@@ -91,14 +114,24 @@ const index = () => {
 
   useEffect(() => {
     calculateTotalPrice();
-    return () => {};
   }, [productList]);
 
   return (
     <View style={styles.container}>
+      {modalVisible ? (
+        <>
+          <CustomModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            addProduct={handleAddProductToList}
+          ></CustomModal>
+        </>
+      ) : (
+        <></>
+      )}
       <View>
         <Text style={styles.titleText}>Lista de la compra - {totalPrice}</Text>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
           <Text style={styles.buttonText}>Añadir producto</Text>
         </Pressable>
       </View>
@@ -110,7 +143,7 @@ const index = () => {
               style={[
                 styles.productContainer,
                 index % 2 === 0 ? styles.evenBackground : styles.oddBackground,
-                product.isBought ? { backgroundColor: "blue" } : {},
+                product.isBought ? { backgroundColor: "green" } : {},
               ]}
             >
               <View style={styles.productImageContainer}>
