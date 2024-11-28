@@ -23,17 +23,17 @@ const cleanProduct: CartProduct = {
 };
 
 const getProductImageFromData = (category: string) => {
-  if (category == "Panadería") {
+  if (category == "panaderia") {
     return require("../../assets/imgs/panaderia.jpg");
-  } else if (category == "Enlatados") {
+  } else if (category == "enlatados") {
     return require("../../assets/imgs/lata.jpg");
-  } else if (category == "Bebidas") {
+  } else if (category == "bebidas") {
     return require("../../assets/imgs/botella.jpg");
-  } else if (category == "Carnes") {
+  } else if (category == "carnes") {
     return require("../../assets/imgs/carne.jpg");
-  } else if (category == "Pescados") {
+  } else if (category == "pescados") {
     return require("../../assets/imgs/pescado.jpg");
-  } else if (category == "Frutas/Verduras") {
+  } else if (category == "frutas" || category == "verduras") {
     return require("../../assets/imgs/frutas.jpeg");
   } else {
     return require("../../assets/imgs/icons8-cesto-90.png");
@@ -66,7 +66,8 @@ const index = () => {
   };
 
   const handleDeleteAll = () => {
-    setProductList([]);
+    const newList: CartProduct[] = [];
+    setProductList(newList);
     setDeleteModalVisible(false);
   };
 
@@ -95,6 +96,7 @@ const index = () => {
         product.id === newProduct.id ? { ...product, ...newProduct } : product
       )
     );
+    setProductToEdit(cleanProduct);
   };
 
   const calculateTotalPrice = () => {
@@ -127,7 +129,7 @@ const index = () => {
       )}
       {deleteModalVisible && (
         <>
-          <Modal>
+          <Modal transparent={true}>
             <View style={styles.modalOutterView}>
               <View style={styles.modalInnerView}>
                 <Text>
@@ -136,13 +138,13 @@ const index = () => {
                 <View style={styles.buttonContainer}>
                   <Pressable
                     style={styles.button}
-                    onPress={() => handleDeleteAll()}
+                    onPress={() => setDeleteModalVisible(false)}
                   >
                     <Text style={styles.buttonText}>Cancelar</Text>
                   </Pressable>
                   <Pressable
                     style={styles.button}
-                    onPress={() => setDeleteModalVisible(false)}
+                    onPress={() => handleDeleteAll()}
                   >
                     <Text style={styles.buttonText}>Eliminar</Text>
                   </Pressable>
