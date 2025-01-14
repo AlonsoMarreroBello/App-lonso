@@ -14,16 +14,6 @@ export default function WelcomePage() {
           resizeMode="contain"
           source={require("..\\assets\\imgs\\a-portfolio-of-funny-stock-market-memes-for-people-who-have-no-idea-what-dividends-are.jpg")}
         />
-        <Pressable style={styles.pressable}>
-          <Link href={"../portfolio"}>
-            <Text style={styles.pressableText}>Botón</Text>
-          </Link>
-        </Pressable>
-        <Pressable style={styles.pressable}>
-          <Link href={"../shoppingCart"}>
-            <Text style={styles.pressableText}>Lista de la compra</Text>
-          </Link>
-        </Pressable>
       </View>
     </View>
   );
