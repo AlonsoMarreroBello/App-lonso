@@ -1,20 +1,40 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Slot } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Drawer } from "expo-router/drawer";
+import type { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useNavigation } from "@react-navigation/native";
+
+const CustomHeader: React.FC = () => {
+  const navigation = useNavigation<DrawerNavigationProp<{}>>();
+
+  const openDrawer = () => {
+    navigation.openDrawer();
+  };
+
+  return (
+    <View style={styles.header}>
+      <TouchableOpacity onPress={openDrawer} style={styles.menuIcon}>
+        <Text style={styles.menuIconText}>☰</Text>
+      </TouchableOpacity>
+      <Text style={styles.headerText}>My App</Text>
+    </View>
+  );
+};
 
 const AppLayout = () => {
   return (
-    <View style={styles.wrapper}>
-      <StatusBar />
-      <View style={styles.header}>
-        <View style={styles.menuIcon}>
-          <Text style={styles.menuIconText}>☰</Text>
-        </View>
-        <Text style={styles.headerText}>My App</Text>
-      </View>
-      <Slot />
-    </View>
+    <Drawer
+      screenOptions={{
+        header: () => <CustomHeader />,
+      }}
+    >
+      <Drawer.Screen name="welcome/index" options={{ drawerLabel: "Home" }} />
+      <Drawer.Screen name="portfolio" options={{ drawerLabel: "Portfolio" }} />
+      <Drawer.Screen
+        name="shoppingCart/index"
+        options={{ drawerLabel: "Shopping Cart" }}
+      />
+    </Drawer>
   );
 };
 
