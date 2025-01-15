@@ -7,11 +7,11 @@ import {
   Image,
   Modal,
 } from "react-native";
-import { CartProduct } from "../../types";
+import { CartProduct } from "../../../types";
 import React, { useState } from "react";
 import uuid from "react-native-uuid";
 import { useEffect } from "react";
-import CustomModal from "../../components/modal/CustomModal";
+import CustomModal from "../../../components/modal/CustomModal";
 
 const cleanProduct: CartProduct = {
   id: "",
@@ -24,19 +24,19 @@ const cleanProduct: CartProduct = {
 
 const getProductImageFromData = (category: string) => {
   if (category == "panaderia") {
-    return require("../../assets/imgs/panaderia.jpg");
+    return require("../../../assets/imgs/panaderia.jpg");
   } else if (category == "enlatados") {
-    return require("../../assets/imgs/lata.jpg");
+    return require("../../../assets/imgs/lata.jpg");
   } else if (category == "bebidas") {
-    return require("../../assets/imgs/botella.jpg");
+    return require("../../../assets/imgs/botella.jpg");
   } else if (category == "carnes") {
-    return require("../../assets/imgs/carne.jpg");
+    return require("../../../assets/imgs/carne.jpg");
   } else if (category == "pescados") {
-    return require("../../assets/imgs/pescado.jpg");
+    return require("../../../assets/imgs/pescado.jpg");
   } else if (category == "frutas" || category == "verduras") {
-    return require("../../assets/imgs/frutas.jpeg");
+    return require("../../../assets/imgs/frutas.jpeg");
   } else {
-    return require("../../assets/imgs/icons8-cesto-90.png");
+    return require("../../../assets/imgs/icons8-cesto-90.png");
   }
 };
 
@@ -212,7 +212,7 @@ const index = () => {
                   >
                     <Image
                       resizeMode="contain"
-                      source={require("../../assets/imgs/icons8-editar-96.png")}
+                      source={require("../../../assets/imgs/icons8-editar-96.png")}
                       style={styles.icon}
                     />
                   </Pressable>
@@ -224,7 +224,7 @@ const index = () => {
                       >
                         <Image
                           resizeMode="contain"
-                          source={require("../../assets/imgs/icons8-marca-de-verificación-100.png")}
+                          source={require("../../../assets/imgs/icons8-marca-de-verificación-100.png")}
                           style={styles.icon}
                         />
                       </Pressable>
@@ -237,7 +237,7 @@ const index = () => {
                       >
                         <Image
                           resizeMode="contain"
-                          source={require("../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
+                          source={require("../../../assets/imgs/icons8-agregar-a-carrito-de-compras-100.png")}
                           style={styles.icon}
                         />
                       </Pressable>
@@ -249,7 +249,7 @@ const index = () => {
                   >
                     <Image
                       resizeMode="contain"
-                      source={require("../../assets/imgs/icons8-basura-128.png")}
+                      source={require("../../../assets/imgs/icons8-basura-128.png")}
                       style={styles.icon}
                     />
                   </Pressable>

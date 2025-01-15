@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import React from "react";
-import { thingsILikeALot as favouriteThings } from "../../data/thingsILikeALot";
-import Card from "../../components/card/Card";
-import RandomQuote from "../../components/randomQuote/RandoQuote";
+import { thingsILikeALot as favouriteThings } from "../../../data/thingsILikeALot";
+import Card from "../../../components/card/Card";
+import RandomQuote from "../../../components/randomQuote/RandoQuote";
 
 function ProfileScreen() {
   return (
