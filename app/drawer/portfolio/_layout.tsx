@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import CustomHeader from "../../components/Header";
+import CustomHeader from "../../../components/Header";
 
 const TabsLayout = () => {
   console.log("tabs");
