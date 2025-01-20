@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
@@ -53,7 +60,7 @@ const login = () => {
             marginBottom: "7%",
           }}
         >
-          Registro
+          Iniciar sesión
         </Text>
         <View style={{ marginHorizontal: "10%", marginVertical: "2%" }}>
           <Text style={{ marginLeft: "2%", marginBottom: "2%" }}>Email</Text>
@@ -88,10 +95,17 @@ const login = () => {
           >
             <Pressable style={{}} onPress={handleSubmit}>
               <Text style={{ color: "white", fontWeight: "bold" }}>
-                Registrarse
+                Iniciar sesión
               </Text>
             </Pressable>
           </View>
+          <TouchableOpacity onPress={() => router.navigate("/login/signin")}>
+            <Text
+              style={{ color: "blue", textAlign: "center", marginTop: "5%" }}
+            >
+              ¿No tienes cuenta? Registrate
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>

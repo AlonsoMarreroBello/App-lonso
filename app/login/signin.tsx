@@ -1,6 +1,15 @@
-import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import loginService from "../../services/login-service";
+import { router } from "expo-router";
 
 const signin = () => {
   const emailRegex =
@@ -19,7 +28,7 @@ const signin = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       form.name.trim() != "" &&
       form.name !== undefined &&
@@ -30,6 +39,11 @@ const signin = () => {
     ) {
       if (emailRegex.test(form.email) && passRegex.test(form.password)) {
         console.log(form); // Lógica de solicitud a la API
+        await loginService.register({
+          fullname: form.name,
+          email: form.email,
+          pswd: form.password,
+        });
         return;
       }
     }
@@ -102,6 +116,13 @@ const signin = () => {
               </Text>
             </Pressable>
           </View>
+          <TouchableOpacity onPress={() => router.navigate("/login/login")}>
+            <Text
+              style={{ color: "blue", textAlign: "center", marginTop: "5%" }}
+            >
+              ¿Ya tienes cuenta? Inicia sesión
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>
