@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Redirect, router } from "expo-router";
+import { router } from "expo-router";
+import loginService from "../../services/login-service";
 
 const login = () => {
   const emailRegex =

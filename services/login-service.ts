@@ -3,3 +3,5 @@ const logIn = () => {
 };
 
 const loginService = { logIn };
+
+export default loginService;
