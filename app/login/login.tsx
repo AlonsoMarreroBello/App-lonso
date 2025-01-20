@@ -1,13 +1,12 @@
 import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { Redirect, router } from "expo-router";
 
-const signin = () => {
+const login = () => {
   const emailRegex =
     /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-  const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   const [form, setForm] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -21,16 +20,15 @@ const signin = () => {
 
   const handleSubmit = () => {
     if (
-      form.name.trim() != "" &&
-      form.name !== undefined &&
       form.email.trim() != "" &&
       form.email !== undefined &&
       form.password.trim() != "" &&
       form.password !== undefined
     ) {
-      if (emailRegex.test(form.email) && passRegex.test(form.password)) {
+      if (emailRegex.test(form.email)) {
         console.log(form); // Lógica de solicitud a la API
-        return;
+        loginService.logIn();
+        router.navigate("/drawer/welcome");
       }
     }
   };
@@ -56,15 +54,6 @@ const signin = () => {
         >
           Registro
         </Text>
-        <View style={{ marginHorizontal: "10%", marginVertical: "2%" }}>
-          <Text style={{ marginLeft: "2%", marginBottom: "2%" }}>Nombre</Text>
-          <TextInput
-            style={{ borderWidth: 1, borderRadius: 10 }}
-            onChangeText={(text) => handleChange("name", text)}
-            placeholder="Nombre"
-            value={form.name}
-          />
-        </View>
         <View style={{ marginHorizontal: "10%", marginVertical: "2%" }}>
           <Text style={{ marginLeft: "2%", marginBottom: "2%" }}>Email</Text>
           <TextInput
@@ -108,6 +97,6 @@ const signin = () => {
   );
 };
 
-export default signin;
+export default login;
 
 const styles = StyleSheet.create({});
