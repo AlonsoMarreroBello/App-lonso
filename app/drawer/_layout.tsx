@@ -9,6 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import asyncStorageService from "../../services/asyncStorage-service";
 
 const CustomHeader: React.FC = () => {
   const navigation = useNavigation<DrawerNavigationProp<{}>>();
@@ -31,6 +32,7 @@ const CustomDrawerContent: React.FC<any> = (props) => {
   const handleLogout = () => {
     console.log("Logging out...");
     props.navigation.closeDrawer();
+    asyncStorageService.removeData("token");
     router.navigate("/login/login");
   };
 

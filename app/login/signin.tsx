@@ -38,13 +38,12 @@ const signin = () => {
       form.password !== undefined
     ) {
       if (emailRegex.test(form.email) && passRegex.test(form.password)) {
-        console.log(form); // Lógica de solicitud a la API
         await loginService.register({
           fullname: form.name,
           email: form.email,
           pswd: form.password,
         });
-        return;
+        router.navigate("/login/login");
       }
     }
   };

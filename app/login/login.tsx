@@ -26,18 +26,33 @@ const login = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
-      form.email.trim() != "" &&
+      form.email.trim() !== "" &&
       form.email !== undefined &&
-      form.password.trim() != "" &&
+      form.password.trim() !== "" &&
       form.password !== undefined
     ) {
       if (emailRegex.test(form.email)) {
-        console.log(form); // Lógica de solicitud a la API
-        loginService.logIn();
-        router.navigate("/drawer/welcome");
+        console.log(form);
+        try {
+          const loginSuccess = await loginService.logIn({
+            email: form.email,
+            pswd: form.password,
+          });
+          if (loginSuccess) {
+            router.navigate("/drawer/welcome");
+          } else {
+            window.alert("Credenciales incorrectas");
+          }
+        } catch (err) {
+          window.alert("Error en el inicio de sesión");
+        }
+      } else {
+        window.alert("El email no es válido");
       }
+    } else {
+      window.alert("Por favor, completa todos los campos");
     }
   };
 
