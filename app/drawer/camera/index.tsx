@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import cameraService from "../../../services/camera-service";
+import LoadingSpinner from "../../../components/loadingSpinner/LoadingSpinner";
 
 const { width, height } = Dimensions.get("window");
 
@@ -81,7 +82,7 @@ const index = () => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text>Cargando imágenes...</Text>
+        <LoadingSpinner />
       </View>
     );
   }
